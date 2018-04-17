@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+
+  job_1:
+    image: kendu/gearman
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.101
+
+  job_2:
+    image: kendu/gearman
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.102
+
+  job_3:
+    image: kendu/gearman
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.103
+
+  job_4:
+    image: kendu/gearman
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.104
+
+networks:
+  microservices:
+    external: true

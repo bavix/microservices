@@ -1,0 +1,68 @@
+version: '3.6'
+services:
+
+  nginx:
+    build:
+      context: ./environment/nginx
+    environment:
+      - NGINX_HOST=${APP_HOST}
+    command: bash -c "/start.sh"
+    depends_on:
+      - php_1
+      - php_2
+      - php_3
+      - php_4
+    volumes:
+      - ./api:/var/www/html
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.2
+
+  php_1:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./api:/var/www/html
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.3
+
+  php_2:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./api:/var/www/html
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.4
+
+  php_3:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./api:/var/www/html
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.5
+
+  php_4:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./api:/var/www/html
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.6
+
+  php_build:
+    image: composer
+    volumes:
+      - ./api/composer.json:/app/composer.json
+      - ./api/vendor:/app/vendor
+    command: composer install --ignore-platform-reqs --no-scripts
+    networks:
+      microservices:
+
+networks:
+  microservices:
+    external: true

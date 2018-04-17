@@ -1,0 +1,34 @@
+version: '3.6'
+services:
+
+  sess1:
+    image: memcached
+    command: memcached -m 1024m
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.31
+
+  sess2:
+    image: memcached
+    command: memcached -m 1024m
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.32
+
+  sess3:
+    image: memcached
+    command: memcached -m 1024m
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.33
+
+  sess4:
+    image: memcached
+    command: memcached -m 1024m
+    networks:
+      microservices:
+        ipv4_address: 172.16.140.34
+
+networks:
+  microservices:
+    external: true
