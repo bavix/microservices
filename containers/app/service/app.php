@@ -7,7 +7,7 @@ $worker->addServer('172.16.140.102', 4730);
 $worker->addServer('172.16.140.103', 4730);
 $worker->addServer('172.16.140.104', 4730);
 
-$worker->addFunction('sync', function (GearmanJob $job) {
+$worker->addFunction('get_json', function (GearmanJob $job) {
     return \json_encode([
         'message' => $job->workload()
     ]);

@@ -51,7 +51,11 @@ abstract class Controller
 
             // disable warning
             \error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
-            $this->client->setTimeout(100);
+
+            $timeout = $this->attributes()
+                ->getData('timeout', 100);
+
+            $this->client->setTimeout($timeout);
         }
 
         return $this->client;

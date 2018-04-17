@@ -16,7 +16,7 @@ services:
       - ./api:/var/www/html
     networks:
       microservices:
-        ipv4_address: 172.16.140.2
+        ipv4_address: 172.16.140.12
 
   php_1:
     build:
@@ -25,7 +25,7 @@ services:
       - ./api:/var/www/html
     networks:
       microservices:
-        ipv4_address: 172.16.140.3
+        ipv4_address: 172.16.140.13
 
   php_2:
     build:
@@ -34,7 +34,7 @@ services:
       - ./api:/var/www/html
     networks:
       microservices:
-        ipv4_address: 172.16.140.4
+        ipv4_address: 172.16.140.14
 
   php_3:
     build:
@@ -43,7 +43,7 @@ services:
       - ./api:/var/www/html
     networks:
       microservices:
-        ipv4_address: 172.16.140.5
+        ipv4_address: 172.16.140.15
 
   php_4:
     build:
@@ -52,7 +52,7 @@ services:
       - ./api:/var/www/html
     networks:
       microservices:
-        ipv4_address: 172.16.140.6
+        ipv4_address: 172.16.140.16
 
   php_build:
     image: composer

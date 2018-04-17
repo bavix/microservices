@@ -12,14 +12,8 @@ class Sync extends Controller
      */
     protected function default(): array
     {
-        $timeout = $this->attributes()
-            ->getData('timeout', $this->client()->timeout());
-
-        $this->client()
-            ->setTimeout($timeout);
-
         $response = $this->client()->doNormal(
-            'sync',
+            'get_json',
             __METHOD__
         );
 
@@ -32,5 +26,5 @@ class Sync extends Controller
             true
         );
     }
-    
+
 }
