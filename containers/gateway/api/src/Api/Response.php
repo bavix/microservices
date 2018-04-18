@@ -12,11 +12,16 @@ class Response
 
     /**
      * Response constructor.
-     * @param array|\stdClass|string $body
+     * @param array|\stdClass|string|QueueQuery $query
      */
-    public function __construct($body)
+    public function __construct($query)
     {
-        $this->body = $body;
+        $this->body = $query;
+
+        if (\is_object($query) && $query instanceof QueueQuery)
+        {
+            $this->body = $query->get();
+        }
     }
 
     /**

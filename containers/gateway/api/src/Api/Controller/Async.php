@@ -3,6 +3,7 @@
 namespace Gateway\Api\Controller;
 
 use Gateway\Api\Controller;
+use Gateway\Api\QueueQuery;
 
 class Async extends Controller
 {
@@ -10,20 +11,12 @@ class Async extends Controller
     /**
      * @return array
      */
-    protected function default(): array
+    protected function default(): QueueQuery
     {
-        $handleId = $this->client()->doBackground(
-            'get_json',
-            __METHOD__
+        return $this->async(
+            'app_message',
+            $this->queueData->data(__METHOD__)
         );
-
-        if ($this->client()->returnCode() === GEARMAN_TIMEOUT) {
-            throw new \RuntimeException('Unable to retrieve data from Gearman', 400);
-        }
-
-        return [
-            'handle_id' => $handleId
-        ];
     }
 
     protected function get(): array
@@ -34,9 +27,7 @@ class Async extends Controller
             throw new \InvalidArgumentException('HandleId not found', 400);
         }
 
-        $stat = $this->client()->jobStatus($handleId);
-
-        var_dump($this->client());die;
+        return $this->client()->jobStatus($handleId);
     }
 
 }

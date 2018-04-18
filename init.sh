@@ -8,7 +8,7 @@ WORK_DIR=$(cd $(dirname $0) && pwd)
 cd ${WORK_DIR}
 cd containers
 
-containers=(memcached gearman app gateway)
+containers=(memcached gearman app gateway store)
 
 for i in "${containers[@]}"; do
     cd $i

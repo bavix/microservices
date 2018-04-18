@@ -24,6 +24,11 @@ abstract class Controller
     protected $attributes;
 
     /**
+     * @var QueueData
+     */
+    protected $queueData;
+
+    /**
      * Controller constructor.
      * @param Route $route
      * @param Slice $attributes
@@ -32,6 +37,116 @@ abstract class Controller
     {
         $this->route = $route;
         $this->attributes = $attributes;
+        $this->queueData = new QueueData();
+    }
+
+    /**
+     * @param $data
+     * @return string
+     */
+    protected function data($data): string {
+        if (\is_object($data) || \is_array($data)) {
+            return \json_encode($data);
+        }
+
+        return (string)$data;
+    }
+
+    /**
+     * @param string $handleId
+     * @return string
+     */
+    protected function handle(string $handleId): string {
+        return \json_encode([
+            'handle_id' => $handleId
+        ]);
+    }
+
+    /**
+     * @param string $name
+     * @param $data
+     * @return string
+     */
+    protected function sync(string $name, $data): QueueQuery {
+        return new QueueQuery(
+            $this->client(),
+            $this->client()->doNormal($name, $this->data($data))
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param $data
+     * @return string
+     */
+    protected function syncLow(string $name, $data): QueueQuery {
+        return new QueueQuery(
+            $this->client(),
+            $this->client()->doLow($name, $this->data($data))
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param $data
+     * @return string
+     */
+    protected function syncHigh(string $name, $data): QueueQuery {
+        return new QueueQuery(
+            $this->client(),
+            $this->client()->doHigh($name, $this->data($data))
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param $data
+     * @return string
+     */
+    protected function async(string $name, $data): QueueQuery {
+        return new QueueQuery(
+            $this->client(),
+            $this->handle(
+                $this->client()->doBackground(
+                    $name,
+                    $this->data($data)
+                )
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param $data
+     * @return string
+     */
+    protected function asyncLow(string $name, $data): QueueQuery {
+        return new QueueQuery(
+            $this->client(),
+            $this->handle(
+                $this->client()->doLowBackground(
+                    $name,
+                    $this->data($data)
+                )
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param $data
+     * @return string
+     */
+    protected function asyncHigh(string $name, $data): QueueQuery {
+        return new QueueQuery(
+            $this->client(),
+            $this->handle(
+                $this->client()->doHighBackground(
+                    $name,
+                    $this->data($data)
+                )
+            )
+        );
     }
 
     /**
@@ -50,7 +165,7 @@ abstract class Controller
             }
 
             // disable warning
-            \error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
+            \error_reporting(E_ALL & ~E_WARNING);
 
             $timeout = $this->attributes()
                 ->getData('timeout', 100);

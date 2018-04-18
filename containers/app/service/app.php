@@ -7,9 +7,12 @@ $worker->addServer('172.16.140.102', 4730);
 $worker->addServer('172.16.140.103', 4730);
 $worker->addServer('172.16.140.104', 4730);
 
-$worker->addFunction('get_json', function (GearmanJob $job) {
+$worker->addFunction('app_message', function (GearmanJob $job) {
+
+    $object = \json_decode($job->workload());
+
     return \json_encode([
-        'message' => $job->workload()
+        'message' => $object->data ?? null
     ]);
 });
 

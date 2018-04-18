@@ -1,0 +1,47 @@
+version: '3.6'
+services:
+
+  consumer_1:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./service:/var/www/html
+    networks:
+      microservices:
+
+  consumer_2:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./service:/var/www/html
+    networks:
+      microservices:
+
+  consumer_3:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./service:/var/www/html
+    networks:
+      microservices:
+
+  consumer_4:
+    build:
+      context: ./environment/php
+    volumes:
+      - ./service:/var/www/html
+    networks:
+      microservices:
+
+#  php_build:
+#    image: composer
+#    volumes:
+#      - ./service/composer.json:/app/composer.json
+#      - ./service/vendor:/app/vendor
+#    command: composer install --ignore-platform-reqs --no-scripts
+#    networks:
+#      microservices:
+
+networks:
+  microservices:
+    external: true

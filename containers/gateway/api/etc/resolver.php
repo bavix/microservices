@@ -6,7 +6,7 @@ return [
         'path' => '<processor>(/<action>)',
         'defaults' => [
             'action' => 'default',
-            'timeout' => 15
+            'timeout' => 25
         ]
     ],
 ];

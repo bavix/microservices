@@ -3,27 +3,37 @@
 namespace Gateway\Api\Controller;
 
 use Gateway\Api\Controller;
+use Gateway\Api\QueueQuery;
 
 class Sync extends Controller
 {
 
     /**
-     * @return array
+     * @return QueueQuery
      */
-    protected function default(): array
+    protected function default(): QueueQuery
     {
-        $response = $this->client()->doNormal(
-            'get_json',
-            __METHOD__
-        );
+//        return $this->sync(
+//            'store_set',
+//            $this->queueData
+//                ->data([
+//                    'message' => __METHOD__
+//                ])
+//                ->meta([
+//                    'handle_id' => 'H:afbbe472b68e:5'
+//                ])
+//        );
 
-        if ($this->client()->returnCode() === GEARMAN_TIMEOUT) {
-            throw new \RuntimeException('Unable to retrieve data from Gearman', 400);
-        }
+//        return $this->sync(
+//            'store_get',
+//            $this->queueData->data([
+//                'handle_id' => 'H:afbbe472b68e:5'
+//            ])
+//        );
 
-        return \json_decode(
-            $response,
-            true
+        return $this->sync(
+            'app_message',
+            $this->queueData->data(__METHOD__)
         );
     }
 
