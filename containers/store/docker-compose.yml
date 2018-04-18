@@ -1,6 +1,11 @@
 version: '3.6'
 services:
 
+  mongodb:
+    image: mongo:latest
+    networks:
+      microservices:
+
   consumer_1:
     build:
       context: ./environment/php

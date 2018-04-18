@@ -41,18 +41,6 @@ abstract class Controller
     }
 
     /**
-     * @param $data
-     * @return string
-     */
-    protected function data($data): string {
-        if (\is_object($data) || \is_array($data)) {
-            return \json_encode($data);
-        }
-
-        return (string)$data;
-    }
-
-    /**
      * @param string $handleId
      * @return string
      */
@@ -64,52 +52,61 @@ abstract class Controller
 
     /**
      * @param string $name
-     * @param $data
+     * @param QueueData $data
      * @return string
      */
-    protected function sync(string $name, $data): QueueQuery {
+    protected function sync(string $name, QueueData $data): QueueQuery {
         return new QueueQuery(
             $this->client(),
-            $this->client()->doNormal($name, $this->data($data))
+            $this->client()->doNormal(
+                $name,
+                $data->metaMarge(['type' => 'sync'])->toJson()
+            )
         );
     }
 
     /**
      * @param string $name
-     * @param $data
+     * @param QueueData $data
      * @return string
      */
-    protected function syncLow(string $name, $data): QueueQuery {
+    protected function syncLow(string $name, QueueData $data): QueueQuery {
         return new QueueQuery(
             $this->client(),
-            $this->client()->doLow($name, $this->data($data))
+            $this->client()->doLow(
+                $name,
+                $data->metaMarge(['type' => 'sync'])->toJson()
+            )
         );
     }
 
     /**
      * @param string $name
-     * @param $data
+     * @param QueueData $data
      * @return string
      */
-    protected function syncHigh(string $name, $data): QueueQuery {
+    protected function syncHigh(string $name, QueueData $data): QueueQuery {
         return new QueueQuery(
             $this->client(),
-            $this->client()->doHigh($name, $this->data($data))
+            $this->client()->doHigh(
+                $name,
+                $data->metaMarge(['type' => 'sync'])->toJson()
+            )
         );
     }
 
     /**
      * @param string $name
-     * @param $data
+     * @param QueueData $data
      * @return string
      */
-    protected function async(string $name, $data): QueueQuery {
+    protected function async(string $name, QueueData $data): QueueQuery {
         return new QueueQuery(
             $this->client(),
             $this->handle(
                 $this->client()->doBackground(
                     $name,
-                    $this->data($data)
+                    $data->metaMarge(['type' => 'async'])->toJson()
                 )
             )
         );
@@ -117,16 +114,16 @@ abstract class Controller
 
     /**
      * @param string $name
-     * @param $data
+     * @param QueueData $data
      * @return string
      */
-    protected function asyncLow(string $name, $data): QueueQuery {
+    protected function asyncLow(string $name, QueueData $data): QueueQuery {
         return new QueueQuery(
             $this->client(),
             $this->handle(
                 $this->client()->doLowBackground(
                     $name,
-                    $this->data($data)
+                    $data->metaMarge(['type' => 'async'])->toJson()
                 )
             )
         );
@@ -134,16 +131,16 @@ abstract class Controller
 
     /**
      * @param string $name
-     * @param $data
+     * @param QueueData $data
      * @return string
      */
-    protected function asyncHigh(string $name, $data): QueueQuery {
+    protected function asyncHigh(string $name, QueueData $data): QueueQuery {
         return new QueueQuery(
             $this->client(),
             $this->handle(
                 $this->client()->doHighBackground(
                     $name,
-                    $this->data($data)
+                    $data->metaMarge(['type' => 'async'])->toJson()
                 )
             )
         );

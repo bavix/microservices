@@ -2,6 +2,8 @@
 
 namespace Gateway\Api;
 
+use Bavix\Helpers\Arr;
+
 class QueueData implements \JsonSerializable
 {
 
@@ -35,9 +37,28 @@ class QueueData implements \JsonSerializable
      *
      * @return QueueData
      */
-    public function meta($data): self
+    public function meta(array $data): self
     {
         $this->workload['meta'] = $data;
+        return $this;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return QueueData
+     */
+    public function metaMarge(array $data): self
+    {
+        if (empty($this->workload['meta'])) {
+            return $this->meta($data);
+        }
+
+        $this->workload['meta'] = \array_merge(
+            $this->workload['meta'],
+            $data
+        );
+
         return $this;
     }
 
@@ -46,6 +67,13 @@ class QueueData implements \JsonSerializable
      */
     public function jsonSerialize(): array {
         return $this->workload;
+    }
+
+    /**
+     * @return string
+     */
+    public function toJson(): string {
+        return \json_encode($this);
     }
 
 }
