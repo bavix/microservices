@@ -33,14 +33,14 @@ services:
     networks:
       microservices:
 
-#  php_build:
-#    image: composer
-#    volumes:
-#      - ./service/composer.json:/app/composer.json
-#      - ./service/vendor:/app/vendor
-#    command: composer install --ignore-platform-reqs --no-scripts
-#    networks:
-#      microservices:
+  php_build:
+    image: composer
+    volumes:
+      - ./service/composer.json:/app/composer.json
+      - ./service/vendor:/app/vendor
+    command: composer install --ignore-platform-reqs --no-scripts
+    networks:
+      microservices:
 
 networks:
   microservices:

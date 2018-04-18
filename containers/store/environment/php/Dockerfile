@@ -10,10 +10,13 @@ RUN git clone https://github.com/wcgallego/pecl-gearman \
     && phpize \
     && ./configure \
     && make \
-    && make install
+    && make install \
+#    && pecl install redis \
+#   && pecl install memcached \
+   && pecl install mongodb
 
 RUN docker-php-ext-install -j$(nproc) opcache pdo_mysql
-RUN docker-php-ext-enable gearman
+RUN docker-php-ext-enable gearman mongodb
 
 WORKDIR /var/www/html
 COPY docker-entrypoint /usr/local/bin/
